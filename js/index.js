@@ -1,18 +1,18 @@
 document.addEventListener('DOMContentLoaded',function(){
 
 
-//const apiURL = 'https://api.github.com/search/users?q=octocat';//user search endpoint
-const userList = document.getElementById('user-list')
-const form = document.getElementById('github-form');
-form.addEventListener('submit',(e) => {
+  //const apiURL = 'https://api.github.com/search/users?q=octocat';//user search endpoint
+  const userList = document.getElementById('user-list')
+  const form = document.getElementById('github-form');
+  form.addEventListener('submit',(e) => {
 
-    e.preventDefault(); //prevents form from causing refresh
-    const nameinput = document.getElementById('search').value;
-    console.log('userinput:', nameinput);
-    const userURL = `https://api.github.com/users/${nameinput}`;
-    performFetch(userURL); //takes the specific user url as an argument 
-    displayInfo(nameinput)
-})
+      e.preventDefault(); //prevents form from causing refresh
+      const nameinput = document.getElementById('search').value;
+      console.log('userinput:', nameinput);
+      const userURL = `https://api.github.com/users/${nameinput}`;
+      performFetch(userURL); //takes the specific user url as an argument 
+      displayInfo(nameinput)
+    });
 });
 
 async function performFetch(apiURL){   //takes api url parameter to perfom the fetch operation
