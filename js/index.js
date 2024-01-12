@@ -14,7 +14,11 @@ document.addEventListener('DOMContentLoaded',function(){
      if(nameInput){
          const userURL = `https://api.github.com/users/${nameInput}`;
          try{
-             const response = await fetch(apiURL)
+             const response = await fetch(apiURL, {
+                headers: {
+                    'Accept':'application/vnd.github.v3+json'
+                }
+             })
              if(!response.ok){
                   throw new Error('network response not ok'); 
                 }
@@ -23,7 +27,7 @@ document.addEventListener('DOMContentLoaded',function(){
               //handles display of user information based on data fetched
             } catch (error) {
                   console.error('Error fetching data:', error);
-            }
+                }
         }
     });
     
