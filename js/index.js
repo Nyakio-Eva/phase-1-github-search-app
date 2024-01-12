@@ -18,12 +18,14 @@ document.addEventListener('DOMContentLoaded',function(){
                 headers: {
                     'Accept':'application/vnd.github.v3+json'
                 }
-             })
+             });
+
              if(!response.ok){
                   throw new Error('network response not ok'); 
                 }
              const data = await response.json(); //handle data to json
              console.log('data fetched successfully:', data);
+             displayInfo(data.items);
               //handles display of user information based on data fetched
             } catch (error) {
                   console.error('Error fetching data:', error);
