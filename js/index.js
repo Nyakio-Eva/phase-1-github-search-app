@@ -5,31 +5,26 @@ document.addEventListener('DOMContentLoaded',function(){
   const userList = document.getElementById('user-list')
   const form = document.getElementById('github-form');
   form.addEventListener('submit',async (e) => {
-
-      e.preventDefault(); //prevents form from causing refresh
-      const nameinput = document.getElementById('search').value;
+     e.preventDefault(); //prevents form from causing refresh
+      const nameInput = document.getElementById('search').value.trim();
       console.log('userinput:', nameinput);
-      const userURL = `https://api.github.com/users/${nameinput}`;
-      performFetch(userURL); //takes the specific user url as an argument 
-      displayInfo(nameinput)
-      async function performFetch(apiURL){   //takes api url parameter to perfom the fetch operation
-        try{
-            const response = await fetch(apiURL)
-            if(!response.ok){
-                throw new Error('network response not ok'); 
+      
+      //performFetch(userURL); //takes the specific user url as an argument 
+      //displayInfo(nameInput)
+     if(nameInput){
+         const userURL = `https://api.github.com/users/${nameInput}`;
+         try{
+             const response = await fetch(apiURL)
+             if(!response.ok){
+                  throw new Error('network response not ok'); 
+                }
+             const data = await response.json(); //handle data to json
+             console.log('data fetched successfully:', data);
+              //handles display of user information based on data fetched
+            } catch (error) {
+                  console.error('Error fetching data:', error);
             }
-         const data = await response.json(); //handle data to json
-         console.log('data fetched successfully:', data);
-          //handles display of user information based on data fetched
-         
-        } catch (error) {
-         console.error('Error fetching data:', error);
         }
-
-        }
-
-
-
     });
     
     function displayInfo(data){
