@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded',function(){
   //const apiURL = 'https://api.github.com/search/users?q=octocat';//user search endpoint
   const userList = document.getElementById('user-list')
   const form = document.getElementById('github-form');
-  form.addEventListener('submit',(e) => {
+  form.addEventListener('submit',async (e) => {
 
       e.preventDefault(); //prevents form from causing refresh
       const nameinput = document.getElementById('search').value;
@@ -12,8 +12,7 @@ document.addEventListener('DOMContentLoaded',function(){
       const userURL = `https://api.github.com/users/${nameinput}`;
       performFetch(userURL); //takes the specific user url as an argument 
       displayInfo(nameinput)
-    });
-    async function performFetch(apiURL){   //takes api url parameter to perfom the fetch operation
+      async function performFetch(apiURL){   //takes api url parameter to perfom the fetch operation
         try{
             const response = await fetch(apiURL)
             if(!response.ok){
@@ -26,13 +25,20 @@ document.addEventListener('DOMContentLoaded',function(){
         } catch (error) {
          console.error('Error fetching data:', error);
         }
-    }function displayInfo(data){
+
+        }
+
+
+
+    });
+    
+    function displayInfo(data){
         console.log('displaying user details')
         // Display user details
         const users = data.items || []; //initialize users.items array as per api
         userList.innerHTML = '';   //Clear existing user list before adding new items
     
-        users.forEach((user) => {
+        users.forEach(user => {
             console.log('processing user:',user.login);
             const li = document.createElement('li'); //list item for details of a single user
             const username = document.createElement('h4'); //displays username
