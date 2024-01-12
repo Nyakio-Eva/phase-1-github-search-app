@@ -13,22 +13,26 @@ document.addEventListener('DOMContentLoaded',function(){
       performFetch(userURL); //takes the specific user url as an argument 
       displayInfo(nameinput)
     });
+    async function performFetch(apiURL){   //takes api url parameter to perfom the fetch operation
+        try{
+            const response = await fetch(apiURL)
+            if(!response.ok){
+                throw new Error('network response not ok'); 
+            }
+         const data = await response.json(); //handle data to json
+         console.log('data fetched successfully:', data);
+          //handles display of user information based on data fetched
+         
+        } catch (error) {
+         console.error('Error fetching data:', error);
+        }
+    }
+    
+
+
 });
 
-async function performFetch(apiURL){   //takes api url parameter to perfom the fetch operation
-    try{
-        const response = await fetch(apiURL)
-        if(!response.ok){
-            throw new Error('network response not ok'); 
-        }
-     const data = await response.json(); //handle data to json
-     console.log('data fetched successfully:', data);
-      //handles display of user information based on data fetched
-     
-    } catch (error) {
-     console.error('Error fetching data:', error);
-    }
-}
+
 
 function displayInfo(data){
     console.log('displaying user details')
