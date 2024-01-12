@@ -26,6 +26,35 @@ document.addEventListener('DOMContentLoaded',function(){
         } catch (error) {
          console.error('Error fetching data:', error);
         }
+    }function displayInfo(data){
+        console.log('displaying user details')
+        // Display user details
+        const users = data.items || []; //initialize users.items array as per api
+        userList.innerHTML = '';   //Clear existing user list before adding new items
+    
+        users.forEach((user) => {
+            console.log('processing user:',user.login);
+            const li = document.createElement('li'); //list item for details of a single user
+            const username = document.createElement('h4'); //displays username
+            const avatar = document.createElement('img'); //displays profile picture
+            const profile = document.createElement('a'); //link to user's profile
+          
+            //set content and attributes of created elements based on user data from api
+            username.textContent = user.login;
+            avatar.src = user.avatar_url;
+            profile.href = user.html_url;
+            profile.target = '_blank'; //open's link in a new tab or window
+            profile.textContent = `Visit ${user.login}'s profile`;
+    
+            //append to list item element
+            li.appendChild(username);
+            li.appendChild(avatar);
+            li.appendChild(profile);
+            userList.appendChild(li); //append list element to the ul
+           
+        });
+        console.log("user details displayed successfully!")
+        
     }
     
 
@@ -34,35 +63,5 @@ document.addEventListener('DOMContentLoaded',function(){
 
 
 
-function displayInfo(data){
-    console.log('displaying user details')
-    // Display user details
-    const users = data.items || []; //initialize users.items array as per api
-    userList.innerHTML = '';   //Clear existing user list before adding new items
-
-    users.forEach((user) => {
-        console.log('processing user:',user.login);
-        const li = document.createElement('li'); //list item for details of a single user
-        const username = document.createElement('h4'); //displays username
-        const avatar = document.createElement('img'); //displays profile picture
-        const profile = document.createElement('a'); //link to user's profile
-      
-        //set content and attributes of created elements based on user data from api
-        username.textContent = user.login;
-        avatar.src = user.avatar_url;
-        profile.href = user.html_url;
-        profile.target = '_blank'; //open's link in a new tab or window
-        profile.textContent = `Visit ${user.login}'s profile`;
-
-        //append to list item element
-        li.appendChild(username);
-        li.appendChild(avatar);
-        li.appendChild(profile);
-        userList.appendChild(li); //append list element to the ul
-       
-    });
-    console.log("user details displayed successfully!")
-    
-}
 
   
