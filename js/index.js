@@ -7,14 +7,14 @@ document.addEventListener('DOMContentLoaded',function(){
   form.addEventListener('submit',async (e) => {
      e.preventDefault(); //prevents form from causing refresh
       const nameInput = document.getElementById('search').value.trim();
-      console.log('userinput:', nameinput);
+      console.log('userinput:', nameInput);
       
       //performFetch(userURL); //takes the specific user url as an argument 
       //displayInfo(nameInput)
      if(nameInput){
          const userURL = `https://api.github.com/users/${nameInput}`;
          try{
-             const response = await fetch(apiURL, {
+             const response = await fetch(userURL, {
                 headers: {
                     'Accept':'application/vnd.github.v3+json'
                 }
