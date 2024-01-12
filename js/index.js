@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded',function(){
 
 
-const apiURL = 'https://api.github.com/search/users?q=octocat';//user search endpoint
+//const apiURL = 'https://api.github.com/search/users?q=octocat';//user search endpoint
 const userList = document.getElementById('user-list')
 const form = document.getElementById('github-form');
 form.addEventListener('submit',(e) => {
