@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded',function(){
 
-});
+
 const apiURL = 'https://api.github.com/search/users?q=octocat';//user search endpoint
 const userList = document.getElementById('user-list')
 const form = document.getElementById('github-form');
@@ -13,7 +13,7 @@ form.addEventListener('submit',(e) => {
     performFetch(userURL); //takes the specific user url as an argument 
     displayInfo(nameinput)
 })
-
+});
 
 async function performFetch(apiURL){   //takes api url parameter to perfom the fetch operation
     try{
