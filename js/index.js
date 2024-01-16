@@ -1,74 +1,90 @@
-document.addEventListener('DOMContentLoaded',function(){
-
-
-  //const apiURL = 'https://api.github.com/search/users?q=octocat';//user search endpoint
-  const userList = document.getElementById('user-list')
+document.addEventListener('DOMContentLoaded', function () {
   const form = document.getElementById('github-form');
-  form.addEventListener('submit',async (e) => {
-     e.preventDefault(); //prevents form from causing refresh
-      const nameInput = document.getElementById('search').value.trim();
-      console.log('userinput:', nameInput);
-      
-      //performFetch(userURL); //takes the specific user url as an argument 
-      //displayInfo(nameInput)
-     if(nameInput){
-         const userURL = `https://api.github.com/users/${nameInput}`;
-         try{
-             const response = await fetch(userURL, {
-                headers: {
-                    'Accept':'application/vnd.github.v3+json'
-                }
-             });
+  const userList = document.getElementById('user-list');
+  const reposList = document.getElementById('repos-list');
 
-             if(!response.ok){
-                  throw new Error('network response not ok'); 
-                }
-             const data = await response.json(); //handle data to json
-             console.log('data fetched successfully:', data);
-             displayInfo(data.items);
-              //handles display of user information based on data fetched
-            } catch (error) {
-                  console.error('Error fetching data:', error);
-                }
-        }
-    });
-    
-    function displayInfo(data){
-        console.log('displaying user details')
-        // Display user details
-        const users = data.items || []; //initialize users.items array as per api
-        userList.innerHTML = '';   //Clear existing user list before adding new items
-    
-        users.forEach(user => {
-            console.log('processing user:',user.login);
-            const li = document.createElement('li'); //list item for details of a single user
-            const username = document.createElement('h4'); //displays username
-            const avatar = document.createElement('img'); //displays profile picture
-            const profile = document.createElement('a'); //link to user's profile
-          
-            //set content and attributes of created elements based on user data from api
-            username.textContent = user.login;
-            avatar.src = user.avatar_url;
-            profile.href = user.html_url;
-            profile.target = '_blank'; //open's link in a new tab or window
-            profile.textContent = `Visit ${user.login}'s profile`;
-    
-            //append to list item element
-            li.appendChild(username);
-            li.appendChild(avatar);
-            li.appendChild(profile);
-            userList.appendChild(li); //append list element to the ul
-           
-        });
-        console.log("user details displayed successfully!")
-        
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    // Get the value from the search input
+    const searchTerm = document.getElementById('search').value;
+
+    // Perform GitHub user search
+    searchGitHubUsers(searchTerm);
+  });
+
+  async function searchGitHubUsers(searchTerm) {
+    try {
+      // Include the custom headers
+      const headers = {
+        'Accept': 'application/vnd.github.v3+json'
+      };
+
+      const userSearchUrl = `https://api.github.com/search/users?q=${searchTerm}`;
+
+      const response = await fetch(userSearchUrl, { headers });
+      const data = await response.json();
+
+      // Handle the search results
+      displayUserResults(data.items);
+    } catch (error) {
+      console.error('Error searching GitHub users:', error);
     }
-    
+  }
 
+  function displayUserResults(users) {
+    // Clear previous results
+    userList.innerHTML = '';
+    reposList.innerHTML = '';
 
+    users.forEach(user => {
+      const listItem = document.createElement('li');
+      listItem.innerHTML = `
+        <img src="${user.avatar_url}" alt="${user.login}" width="50" height="50">
+        <a href="#" data-username="${user.login}">${user.login}</a>
+      `;
+
+      // Add click event to each user for fetching repositories
+      listItem.querySelector('a').addEventListener('click', function (event) {
+        event.preventDefault();
+        const username = event.target.getAttribute('data-username');
+        getUserRepos(username);
+      });
+
+      userList.appendChild(listItem);
+    });
+  }
+
+  async function getUserRepos(username) {
+    try {
+      // Include the custom headers
+      const headers = {
+        'Accept': 'application/vnd.github.v3+json'
+      };
+
+      const reposUrl = `https://api.github.com/users/${username}/repos`;
+
+      const response = await fetch(reposUrl, { headers });
+      const repos = await response.json();
+
+      // Display repositories
+      displayRepos(repos);
+    } catch (error) {
+      console.error('Error fetching user repositories:', error);
+    }
+  }
+
+  function displayRepos(repos) {
+    reposList.innerHTML = '';
+
+    if (repos.length === 0) {
+      reposList.innerHTML = '<li>No repositories found for this user.</li>';
+    } else {
+      repos.forEach(repo => {
+        const listItem = document.createElement('li');
+        listItem.textContent = repo.name;
+        reposList.appendChild(listItem);
+      });
+    }
+  }
 });
-
-
-
-
-  
